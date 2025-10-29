@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  nginx-load-balancer:
+    image: nginx:latest
+    container_name: load_balancer
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+
+  backend1:
+    image: alpine:latest
+    command: ["sh", "-c", "while true; do echo 'Server-1 response'; sleep 1; done"]
+
+  backend2:
+    image: alpine:latest
+    command: ["sh", "-c", "while true; do echo 'Server-2 response'; sleep 1; done"]
+
+  backend3:
+    image: alpine:latest
+    command: ["sh", "-c", "while true; do echo 'Server-3 response'; sleep 1; done"]
